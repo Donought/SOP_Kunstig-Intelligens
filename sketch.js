@@ -21,13 +21,13 @@ class Menace {
 									for (let p = 0; p < 3; p++) {
 										this.ai[i][j][k][l][m][n][o][p] = [[], [], []];
 										for (let q = 0; q < 3; q++) {
-											function add(state) {
+											/*function add(state) {
 												if (state == 0) {
 													for (let r = 0; r < this.marbles; r++) {
 														this.ai[i][j][k][l][m][n][o][p][q].push(1);
 													}
 												}
-											}
+											};
 											add(i);
 											add(j);
 											add(k);
@@ -36,7 +36,53 @@ class Menace {
 											add[n];
 											add[o];
 											add[p];
-											add[q];
+											add[q];*/
+
+											if (i == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(0);
+												}
+											}
+											if (j == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(1);
+												}
+											}
+											if (k == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(2);
+												}
+											}
+											if (l == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(3);
+												}
+											}
+											if (m == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(4);
+												}
+											}
+											if (n == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(5);
+												}
+											}
+											if (o == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(6);
+												}
+											}
+											if (p == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(7);
+												}
+											}
+											if (q == 0) {
+												for (let r = 0; r < this.marbles; r++) {
+													this.ai[i][j][k][l][m][n][o][p][q].push(8);
+												}
+											}
 										}
 									}
 								}
