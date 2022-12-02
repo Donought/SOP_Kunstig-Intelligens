@@ -4,6 +4,7 @@ class Menace {
     this.marbles = 2;
     this.restart();
 
+    this.fields = 3;
     this.pos = [];
     this.moves = [];
     this.boxes = [];
@@ -22,83 +23,23 @@ class Menace {
       for (let j = 0; j < 3; j++) {
         this.ai[i][j] = [[], [], []];
         for (let k = 0; k < 3; k++) {
-          this.ai[i][j][k] = [[], [], []];
-          for (let l = 0; l < 3; l++) {
-            this.ai[i][j][k][l] = [[], [], []];
-            for (let m = 0; m < 3; m++) {
-              this.ai[i][j][k][l][m] = [[], [], []];
-              for (let n = 0; n < 3; n++) {
-                this.ai[i][j][k][l][m][n] = [[], [], []];
-                for (let o = 0; o < 3; o++) {
-                  this.ai[i][j][k][l][m][n][o] = [[], [], []];
-                  for (let p = 0; p < 3; p++) {
-                    this.ai[i][j][k][l][m][n][o][p] = [[], [], []];
-                    for (let q = 0; q < 3; q++) {
-                      /*function add(state) {
-												if (state == 0) {
-													for (let r = 0; r < this.marbles; r++) {
-														this.ai[i][j][k][l][m][n][o][p][q].push(1);
-													}
-												}
-											};
-											add(i);
-											add(j);
-											add(k);
-											add(l);
-											add(m);
-											add[n];
-											add[o];
-											add[p];
-											add[q];*/
-
-                      if (i == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(0);
-                        }
-                      }
-                      if (j == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(1);
-                        }
-                      }
-                      if (k == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(2);
-                        }
-                      }
-                      if (l == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(3);
-                        }
-                      }
-                      if (m == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(4);
-                        }
-                      }
-                      if (n == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(5);
-                        }
-                      }
-                      if (o == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(6);
-                        }
-                      }
-                      if (p == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(7);
-                        }
-                      }
-                      if (q == 0) {
-                        for (let r = 0; r < this.marbles; r++) {
-                          this.ai[i][j][k][l][m][n][o][p][q].push(8);
-                        }
-                      }
-                    }
-                  }
-                }
+          for (let q = 0; q < 3; q++) {
+            if (i == 0) {
+              for (let r = 0; r < this.marbles; r++) {
+                this.ai[i][j][k].push([0, 1]);
+                this.ai[i][j][k].push([0, 2]);
+              }
+            }
+            if (j == 0) {
+              for (let r = 0; r < this.marbles; r++) {
+                this.ai[i][j][k].push([1, 1]);
+                this.ai[i][j][k].push([1, 2]);
+              }
+            }
+            if (k == 0) {
+              for (let r = 0; r < this.marbles; r++) {
+                this.ai[i][j][k].push([2, 1]);
+                this.ai[i][j][k].push([2, 2]);
               }
             }
           }
@@ -113,24 +54,49 @@ let gap = 15; // Weird number used to determine spacing of squares
 let bw; // Board width
 let bh; // Board height
 
-let menace1 = new Menace();
-let menace2 = new Menace();
+let menace = new Menace();
 
-let board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+let activeFields = menace.fields;
+
+let board = clearBoard();
+
+let winPiece = 1; // Determines the winning conditions: 1 = fill out with O's, 2 = fill out with X's
+
+let winCount = 0;
+let lossCount = 0;
+
+let positiveFb = 3; // Positive feedback / how many marbles to add
+let negativeFb = 1; // Negative feedback / how many marbles to remove
+
+function clearBoard() {
+  let b = [];
+  for (let i = 0; i < activeFields; i++) {
+    b.push(0);
+  }
+  return b;
+}
+
+let stamp;
 
 function setup() {
   createCanvas(1000, 600);
   bw = height;
   bh = height;
 
-  aiGame(menace1, menace2);
+  console.log(menace.ai);
 
-  //console.log(menace1.ai[0][0][0][0][0][0][0][0][0]);
+  stamp = millis();
 }
 
 function draw() {
   background(150);
   drawGrid();
+
+  /*if (stamp + 1000 < millis()) {
+    checkWin(menace);
+    aiMove(menace);
+    stamp = millis();
+  }*/
 
   // Draw all pieces on the board
   board.forEach((value, index) => {
@@ -141,74 +107,12 @@ function draw() {
       xPiece(index);
     }
   });
-
-  rectMode(CORNER);
-  noStroke();
-  fill(50);
-  rect(
-    bw + height / 20,
-    height / 20,
-    width - bw - (height / 20) * 2,
-    (height / 20) * 18
-  );
 }
 
-function drawGrid() {
-  rectMode(CENTER);
-  noStroke();
-  fill(50);
-  for (let i = 0; i < root; i++) {
-    for (let j = 0; j < root; j++) {
-      rect(
-        (bw / root) * (j + 1) - bw / (root * 2),
-        (bh / root) * (i + 1) - bh / (root * 2),
-        bw / root - bw / (gap * root),
-        bh / root - bh / (gap * root)
-      );
-    }
+function mouseClicked() {
+  for (let i = 0; i < 1; i++) {
+    bulkGame(menace);
   }
-}
-
-function xPiece(pos) {
-  let coord = convertToCoord(pos);
-  let x = coord[0] * (bw / root);
-  let y = coord[1] * (bh / root);
-  let thick = ((15 * 3) / root / 700) * ((bw + bh) / 2); // Weird equation I use to find appropiate thickness
-  stroke(255); // Color
-  strokeWeight(thick);
-
-  // The lines that make up the cross scale with everything else, and as a result, this is pretty unreadable
-  line(
-    x - bw / root + bw / (gap * root) + thick / 2,
-    y - bh / root + bh / (gap * root) + thick / 2,
-    x - bw / (gap * root) - thick / 2,
-    y - bh / (gap * root) - thick / 2
-  );
-  line(
-    x - bw / root + bw / (gap * root) + thick / 2,
-    y - bh / (gap * root) - thick / 2,
-    x - bw / (gap * root) - thick / 2,
-    y - bh / root + bh / (gap * root) + thick / 2
-  );
-}
-
-function oPiece(pos) {
-  let coord = convertToCoord(pos);
-  let x = coord[0] * (bw / root);
-  let y = coord[1] * (bh / root);
-  let thick = ((15 * 3) / root / 700) * ((bw + bh) / 2); // Same equation as I want identical thickness
-  stroke(255); // Color
-  strokeWeight(thick);
-  noFill();
-  ellipseMode(CORNERS); // This line is important if you want to dechipher the following parameters
-
-  // Scales with everything else
-  ellipse(
-    x - bw / root + bw / (gap * root) + thick / 2,
-    y - bh / root + bh / (gap * root) + thick / 2,
-    x - bw / (gap * root) - thick / 2,
-    y - bh / (gap * root) - thick / 2
-  );
 }
 
 // Convert 1d pos to 2d pos
@@ -219,58 +123,93 @@ function convertToCoord(pos) {
   return [x, y];
 }
 
-function aiGame(ai1, ai2) {
-  // ai1 plays when true, ai2 plays when false
-  let turn = random(0, 1) < 0.5;
+function bulkGame(ai) {
+  // ai = the one who will be playing
+  // step: set to 1 if you want to play game step by step
 
-  for (let i = 0; i < 9; i++) {
-    if (turn == true) {
-      aiMove(ai1, ai2);
-      turn = !turn;
+  // ai does all moves at once if step isn't 1:
+
+  for (let j = 0; j < board.length; j++) {
+    aiMove(ai);
+  }
+
+  checkWin(ai);
+}
+
+function checkWin(ai) {
+  if (ai.moves.length >= board.length) {
+    // Determine whether ai won or lost
+    if (
+      arrayEqualityCheck(
+        board,
+        (function () {
+          let b = [];
+          for (let j = 0; j < board.length; j++) {
+            b.push(winPiece);
+          }
+          return b;
+        })()
+      )
+    ) {
+      win(ai, positiveFb);
     } else {
-      aiMove(ai2, ai1);
-      turn = !turn;
+      lose(ai, negativeFb);
+    }
+
+    ai.clear();
+    board = clearBoard();
+  }
+}
+
+function win(ai, fb) {
+  // fb = feedback (how many to add of each marble)
+  console.log("win");
+  for (let i = 0; i < ai.moves.length; i++) {
+    let b = ai.boxes[i];
+    for (let j = 0; j < fb; j++) {
+      ai.ai[b[0]][b[1]][b[2]].push(ai.moves[i]);
     }
   }
-
-  //while (true) {
-  //if (turn == true) {
-  /*let b = board;
-  let t = ai1.ai[b[0]][b[1]][b[2]][b[3]][b[4]][b[5]][b[6]][b[7]][b[8]]; // Temp holder for this array
-
-  ai1.boxes.push(b);
-
-  let move = Math.round(random(0, t.length - 1));
-
-  if (ai1.moves.length == ai2.moves.length) {
-    board[t[move]] = 1;
-  } else {
-    board[t[move]] = 2;
-  }
-
-  ai1.moves.push(move);*/
-  //}
-  //}
+  winCount++;
+  console.log("Wins: " + winCount);
 }
 
-function aiMove(ai1, ai2) {
+function lose(ai, fb) {
+  // fb = feedback (how many to remove of each marble)
+  //console.log("lost");
+  for (let i = 0; i < ai.moves.length; i++) {
+    let b = ai.boxes[i];
+    for (let j = 0; j < fb; j++) {
+      //console.log("lost");
+      //let index = ai.ai[b[0]][b[1]][b[2]].indexOf(ai.moves[i]);
+      console.log(ai.ai[b[0]][b[1]][b[2]]);
+      let index = indexOfArray(ai.ai[b[0]][b[1]][b[2]], ai.moves[i]);
+      console.log(index);
+      if (index != -1) {
+        ai.ai[b[0]][b[1]][b[2]].splice(index, 1);
+        //console.log("lost");
+        //console.log(arrayOccurence(ai.ai[b[0]][b[1]][b[2]], ai.moves[i]));
+      }
+    }
+  }
+  lossCount++;
+  console.log("Losses: " + lossCount);
+}
+
+function aiMove(ai) {
   let b = board;
-  let t = ai1.ai[b[0]][b[1]][b[2]][b[3]][b[4]][b[5]][b[6]][b[7]][b[8]]; // Temp holder for this array
+  //console.log(board);
+  let temp = ai.ai[b[0]][b[1]][b[2]]; // Temp holder for this array
+  //console.log("temp: ", temp);
 
-  ai1.boxes.push(b);
+  ai.boxes.push(b);
+  //console.log("ai.boxes: ", ai.boxes);
+  console.log(menace.boxes);
 
-  let move = Math.round(random(0, t.length - 1));
+  let move = Math.round(random(0, temp.length - 1));
 
-  if (ai1.moves.length == ai2.moves.length) {
-    board[t[move]] = 1;
-  } else {
-    board[t[move]] = 2;
-  }
-
-  ai1.moves.push(move);
-}
-
-// Has to do with chrome's rules. It gives me an error if I don't do this, the error doesn't stop the program from working though
-function touchStarted() {
-  getAudioContext().resume();
+  board[temp[move][0]] = temp[move][1];
+  //console.log(board);
+  ai.moves.push(temp[move]);
+  //console.log("ai.moves: ", ai.moves);
 }
