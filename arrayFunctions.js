@@ -1,3 +1,5 @@
+// NEEDS TESTING
+
 function arrayEqualityCheck(a, b) {
   // Check for basic properties first
   if (a === b) return true;
