@@ -3,7 +3,7 @@ function drawGrid() {
   noStroke();
   fill(50);
   for (let i = 0; i < root; i++) {
-    if (convertToCoord(activeFields - 1)[1] < i + 1) {
+    if (convertToCoord(board.length - 1)[1] < i + 1) {
       fill(50, 0.5 * 255); // Lower opacity for unused fields
     }
     for (let j = 0; j < root; j++) {
