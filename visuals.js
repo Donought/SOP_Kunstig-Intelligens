@@ -42,9 +42,9 @@ function drawStatusBoard() {
   }
 
   if (winPiece == 1) {
-    text("Current goal: fill with O's", x + step, y + step * 4);
+    text("Current goal: O", x + step, y + step * 4);
   } else {
-    text("Current goal: fill with X's", x + step, y + step * 4);
+    text("Current goal: X", x + step, y + step * 4);
   }
 
   text("Games played: " + ai.games, x + step, y + step * 6);
@@ -53,6 +53,12 @@ function drawStatusBoard() {
 
   text("Best win streak: " + ai.bestWinStreak, x + step, y + step * 10);
   text("Current win streak: " + ai.winStreak, x + step, y + step * 11);
+
+  if (ai.bestWinStreak < trainedState) {
+    text("Training status: untrained", x + step, y + step * 13);
+  } else {
+    text("Training status: TRAINED", x + step, y + step * 13);
+  }
 }
 
 function xPiece(pos) {

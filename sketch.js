@@ -1,6 +1,7 @@
 // VARIABLES
-let wait = 250; // How long to wait in between each move (milliseconds)
-let bulk = 500;
+let wait = 250; // How long to wait in between each move in live game (milliseconds)
+let bulk = 500; // How many games to play when bulk button is pressed
+let trainedState = 10; // How many wins in a row before ai is considered trained
 
 let root = 3; // Root of the amount of fields in the grid
 let gap = 15; // Weird number used to determine spacing of squares
@@ -51,6 +52,7 @@ function setup() {
       console.log("Switched goal to O");
     }
     ai.winStreak = 0;
+    ai.bestWinStreak = 0;
   });
 
   butPlayLive = createButton("PLAY LIVE");
@@ -72,7 +74,7 @@ function setup() {
   butPlayUntilTrained = createButton("PLAY UNTIL TRAINED");
   formatBut(butPlayUntilTrained);
   butPlayUntilTrained.mousePressed(function () {
-    while (ai.winStreak < 10) {
+    while (ai.winStreak < trainedState) {
       ai.game();
     }
     console.log("Ai trained after " + ai.games + " games");
