@@ -49,14 +49,14 @@ class Menace {
   checkWin() {
     //if (ai.moves.length >= board.length) {
     // Determine whether ai won or lost
-    if (arrayEqualityCheck(board, [winPiece, winPiece, winPiece])) {
+    if (arrayEqualityCheck(board, fillArray(winPiece, this.fields))) {
       this.win();
     } else {
       this.lose();
     }
 
     this.clear();
-    board = [0, 0, 0];
+    board = fillArray(0, this.fields);
     //}
   }
 
@@ -140,7 +140,7 @@ let ai = new Menace();
 
 let activeFields = ai.fields;
 
-let board = [0, 0, 0];
+let board = fillArray(0, ai.fields);
 
 let winPiece = 1; // Determines the winning conditions: 1 = fill out with O's, 2 = fill out with X's
 

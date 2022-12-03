@@ -1,5 +1,13 @@
 // NEEDS TESTING
 
+// Convert 1d pos to 2d pos
+function convertToCoord(pos) {
+  p = pos + 1;
+  let y = Math.ceil(p / root);
+  let x = p - (y - 1) * root;
+  return [x, y];
+}
+
 function arrayEqualityCheck(a, b) {
   // Check for basic properties first
   if (a === b) return true;
@@ -32,10 +40,10 @@ function indexOfArray(arr, val) {
   return -1;
 }
 
-// Convert 1d pos to 2d pos
-function convertToCoord(pos) {
-  p = pos + 1;
-  let y = Math.ceil(p / root);
-  let x = p - (y - 1) * root;
-  return [x, y];
+function fillArray(val, amount) {
+  let arr = [];
+  for (let i = 0; i < amount; i++) {
+    arr.push(val);
+  }
+  return arr;
 }
