@@ -31,3 +31,11 @@ function indexOfArray(arr, val) {
   }
   return -1;
 }
+
+// Convert 1d pos to 2d pos
+function convertToCoord(pos) {
+  p = pos + 1;
+  let y = Math.ceil(p / root);
+  let x = p - (y - 1) * root;
+  return [x, y];
+}

@@ -8,6 +8,90 @@ class Menace {
     this.pos = [];
     this.moves = [];
     this.boxes = [];
+
+    this.winCount = 0;
+    this.lossCount = 0;
+
+    this.positiveFb = 3; // Positive feedback / how many marbles to add
+    this.negativeFb = 1; // Negative feedback / how many marbles to remove
+  }
+
+  move() {
+    let b = board;
+    //console.log(board);
+    let temp = this.ai[b[0]][b[1]][b[2]]; // Temp holder for this array
+    //console.log("temp: ", ai.ai[b[0]][b[1]][b[2]][1]);
+
+    this.boxes.push([b[0], b[1], b[2]]);
+    //console.log("ai.boxes: ", ai.boxes);
+    //console.log(ai.boxes);
+
+    let move = Math.round(random(0, temp.length - 1));
+    //console.log("move: ", move);
+
+    //console.log("field: ", temp[move]);
+    board[temp[move][0]] = temp[move][1];
+    //console.log(board);
+    this.moves.push(temp[move]);
+    //console.log("ai.moves: ", ai.moves);
+  }
+
+  game() {
+    // Plays an entire game
+
+    for (let j = 0; j < board.length; j++) {
+      this.move();
+    }
+
+    this.checkWin();
+  }
+
+  checkWin() {
+    //if (ai.moves.length >= board.length) {
+    // Determine whether ai won or lost
+    if (arrayEqualityCheck(board, [winPiece, winPiece, winPiece])) {
+      this.win();
+    } else {
+      this.lose();
+    }
+
+    this.clear();
+    board = [0, 0, 0];
+    //}
+  }
+
+  win() {
+    // fb = feedback (how many to add of each marble)
+    for (let i = 0; i < this.moves.length; i++) {
+      let b = this.boxes[i];
+      for (let j = 0; j < this.positiveFb; j++) {
+        this.ai[b[0]][b[1]][b[2]].push(this.moves[i]);
+      }
+    }
+    this.winCount++;
+    console.log("Won: " + this.winCount);
+  }
+
+  lose() {
+    // fb = feedback (how many to remove of each marble)
+    for (let i = 0; i < this.moves.length; i++) {
+      let b = this.boxes[i];
+      //console.log("box: ", b);
+      for (let j = 0; j < this.negativeFb; j++) {
+        //console.log("lost");
+        //let index = ai.ai[b[0]][b[1]][b[2]].indexOf(ai.moves[i]);
+        //console.log(ai.ai[b[0]][b[1]][b[2]]);
+        let index = indexOfArray(this.ai[b[0]][b[1]][b[2]], this.moves[i]);
+        //console.log(index);
+        if (index != -1) {
+          this.ai[b[0]][b[1]][b[2]].splice(index, 1);
+          //console.log("lost");
+          //console.log(arrayOccurence(ai.ai[b[0]][b[1]][b[2]], ai.moves[i]));
+        }
+      }
+    }
+    this.lossCount++;
+    console.log("Lost: " + this.lossCount);
   }
 
   clear() {
@@ -60,12 +144,6 @@ let board = [0, 0, 0];
 
 let winPiece = 1; // Determines the winning conditions: 1 = fill out with O's, 2 = fill out with X's
 
-let winCount = 0;
-let lossCount = 0;
-
-let positiveFb = 3; // Positive feedback / how many marbles to add
-let negativeFb = 1; // Negative feedback / how many marbles to remove
-
 let stamp;
 let wait = 100; // How long to wait in between each move (milliseconds)
 
@@ -73,8 +151,6 @@ function setup() {
   createCanvas(1000, 600);
   bw = height;
   bh = height;
-
-  //console.log(ai.ai);
 
   stamp = millis();
 }
@@ -84,10 +160,10 @@ function draw() {
   drawGrid();
 
   if (ai.moves.length >= board.length && stamp + wait < millis()) {
-    checkWin();
+    ai.checkWin();
     stamp = millis();
   } else if (stamp + wait < millis()) {
-    aiMove();
+    ai.move();
     stamp = millis();
   }
 
@@ -104,92 +180,6 @@ function draw() {
 
 function mouseClicked() {
   for (let i = 0; i < 100; i++) {
-    bulkGame();
+    ai.game();
   }
-}
-
-// Convert 1d pos to 2d pos
-function convertToCoord(pos) {
-  p = pos + 1;
-  let y = Math.ceil(p / root);
-  let x = p - (y - 1) * root;
-  return [x, y];
-}
-
-function bulkGame() {
-  // Plays an entire game
-
-  for (let j = 0; j < board.length; j++) {
-    aiMove();
-  }
-
-  checkWin();
-}
-
-function checkWin() {
-  //if (ai.moves.length >= board.length) {
-  // Determine whether ai won or lost
-  if (arrayEqualityCheck(board, [winPiece, winPiece, winPiece])) {
-    win(positiveFb);
-  } else {
-    lose(negativeFb);
-  }
-
-  ai.clear();
-  board = [0, 0, 0];
-  //}
-}
-
-function win(fb) {
-  // fb = feedback (how many to add of each marble)
-  for (let i = 0; i < ai.moves.length; i++) {
-    let b = ai.boxes[i];
-    for (let j = 0; j < fb; j++) {
-      ai.ai[b[0]][b[1]][b[2]].push(ai.moves[i]);
-    }
-  }
-  winCount++;
-  console.log("Wins: " + winCount);
-}
-
-function lose(fb) {
-  // fb = feedback (how many to remove of each marble)
-  for (let i = 0; i < ai.moves.length; i++) {
-    let b = ai.boxes[i];
-    //console.log("box: ", b);
-    for (let j = 0; j < fb; j++) {
-      //console.log("lost");
-      //let index = ai.ai[b[0]][b[1]][b[2]].indexOf(ai.moves[i]);
-      //console.log(ai.ai[b[0]][b[1]][b[2]]);
-      let index = indexOfArray(ai.ai[b[0]][b[1]][b[2]], ai.moves[i]);
-      //console.log(index);
-      if (index != -1) {
-        ai.ai[b[0]][b[1]][b[2]].splice(index, 1);
-        //console.log("lost");
-        //console.log(arrayOccurence(ai.ai[b[0]][b[1]][b[2]], ai.moves[i]));
-      }
-    }
-  }
-  lossCount++;
-  console.log("Losses: " + lossCount);
-}
-
-function aiMove() {
-  let b = board;
-  //console.log(board);
-  let temp = ai.ai[b[0]][b[1]][b[2]]; // Temp holder for this array
-  //console.log("temp: ", ai.ai[b[0]][b[1]][b[2]][1]);
-
-  ai.boxes.push([b[0], b[1], b[2]]);
-  //console.log("ai.boxes: ", ai.boxes);
-  //console.log(ai.boxes);
-
-  let move = Math.round(random(0, temp.length - 1));
-  //console.log("move: ", move);
-
-  //console.log("field: ", temp[move]);
-  board[temp[move][0]] = temp[move][1];
-  //console.log(board);
-  ai.moves.push(temp[move]);
-  //console.log("ai.moves: ", ai.moves);
 }
