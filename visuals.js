@@ -15,15 +15,38 @@ function drawGrid() {
       );
     }
   }
+}
+
+function drawStatusBoard() {
+  let step = height / 20;
+  let x = bw + step;
+  let y = step;
+
   rectMode(CORNER);
   noStroke();
   fill(50);
-  rect(
-    bw + height / 20,
-    height / 20,
-    width - bw - (height / 20) * 2,
-    (height / 20) * 18
-  );
+  rect(x, y, width - bw - step * 2, step * 18);
+
+  textAlign(LEFT, TOP);
+  textSize(26);
+  fill(255);
+
+  text("STATUS BOARD", x + step, y + step);
+
+  textSize(20);
+
+  if (winPiece == 1) {
+    text("Current goal: fill with O's", x + step, y + step * 3);
+  } else {
+    text("Current goal: fill with X's", x + step, y + step * 3);
+  }
+
+  text("Games played: " + ai.games, x + step, y + step * 5);
+  text("Games won: " + ai.winCount, x + step, y + step * 6);
+  text("Games lost: " + ai.lossCount, x + step, y + step * 7);
+
+  text("Best win streak: " + ai.bestWinStreak, x + step, y + step * 9);
+  text("Current win streak: " + ai.winStreak, x + step, y + step * 10);
 }
 
 function xPiece(pos) {
@@ -66,4 +89,9 @@ function oPiece(pos) {
     x - bw / (gap * root) - thick / 2,
     y - bh / (gap * root) - thick / 2
   );
+}
+
+function formatBut(but) {
+  but.size(but.size().width * 1.5, but.size().height * 1.5);
+  but.style("font-size", "18px");
 }

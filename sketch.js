@@ -12,6 +12,7 @@ let butSwitchAi;
 let butSwitchGoal;
 let butPlayBulk;
 let butPlayLive;
+let butPlayUntilTrained;
 let butRestart;
 
 let liveGame = 0;
@@ -24,6 +25,7 @@ function setup() {
   bh = height;
 
   butSwitchAi = createButton("SWITCH AI");
+  formatBut(butSwitchAi);
   butSwitchAi.mousePressed(function () {
     if (ai.fields == 3) {
       ai = new Menace6();
@@ -36,6 +38,7 @@ function setup() {
   });
 
   butSwitchGoal = createButton("SWITCH GOAL");
+  formatBut(butSwitchGoal);
   butSwitchGoal.mousePressed(function () {
     if (winPiece == 1) {
       winPiece++;
@@ -44,15 +47,18 @@ function setup() {
       winPiece--;
       console.log("Switched goal to O");
     }
+    ai.winStreak = 0;
   });
 
   butPlayLive = createButton("PLAY LIVE");
+  formatBut(butPlayLive);
   butPlayLive.mousePressed(function () {
     liveGame++;
     console.log("Started live game");
   });
 
   butPlayBulk = createButton("PLAY 100");
+  formatBut(butPlayBulk);
   butPlayBulk.mousePressed(function () {
     for (let i = 0; i < 100; i++) {
       ai.game();
@@ -60,11 +66,24 @@ function setup() {
     console.log("Played 100 games");
   });
 
+  butPlayUntilTrained = createButton("PLAY UNTIL TRAINED");
+  formatBut(butPlayUntilTrained);
+  butPlayUntilTrained.mousePressed(function () {
+    while (ai.winStreak < 10) {
+      ai.game();
+    }
+    console.log("Ai trained after " + ai.games + " games");
+  });
+
   butRestart = createButton("RESTART");
+  formatBut(butRestart);
   butRestart.mousePressed(function () {
     ai.restart();
     ai.lossCount = 0;
     ai.winCount = 0;
+    ai.winStreak = 0;
+    ai.bestWinStreak = 0;
+    ai.games = 0;
     console.log("Restarted ai");
   });
 
@@ -74,6 +93,7 @@ function setup() {
 function draw() {
   background(150);
   drawGrid();
+  drawStatusBoard();
 
   if (0 < liveGame) {
     if (ai.moves.length >= board.length && stamp + wait < millis()) {
@@ -95,9 +115,3 @@ function draw() {
     }
   });
 }
-
-/*function mouseClicked() {
-  for (let i = 0; i < 100; i++) {
-    ai.game();
-  }
-}*/

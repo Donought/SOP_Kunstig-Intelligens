@@ -9,8 +9,12 @@ class Menace3 {
     this.moves = [];
     this.boxes = [];
 
+    this.games = 0;
     this.winCount = 0;
     this.lossCount = 0;
+
+    this.winStreak = 0;
+    this.bestWinStreak = 0;
 
     this.positiveFb = 3; // Positive feedback / how many marbles to add
     this.negativeFb = 1; // Negative feedback / how many marbles to remove
@@ -51,12 +55,18 @@ class Menace3 {
     // Determine whether ai won or lost
     if (arrayEqualityCheck(board, fillArray(winPiece, this.fields))) {
       this.win();
+      this.winStreak++;
+      if (this.bestWinStreak < this.winStreak) {
+        this.bestWinStreak = this.winStreak;
+      }
     } else {
       this.lose();
+      this.winStreak = 0;
     }
 
     this.clear();
     board = fillArray(0, this.fields);
+    this.games++;
     //}
   }
 

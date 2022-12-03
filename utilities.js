@@ -1,5 +1,3 @@
-// NEEDS TESTING
-
 // Convert 1d pos to 2d pos
 function convertToCoord(pos) {
   p = pos + 1;
