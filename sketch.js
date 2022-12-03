@@ -1,3 +1,7 @@
+// VARIABLES
+let wait = 250; // How long to wait in between each move (milliseconds)
+let bulk = 500;
+
 let root = 3; // Root of the amount of fields in the grid
 let gap = 15; // Weird number used to determine spacing of squares
 let bw; // Board width
@@ -17,7 +21,6 @@ let butRestart;
 
 let liveGame = 0;
 let stamp;
-let wait = 500; // How long to wait in between each move (milliseconds)
 
 function setup() {
   createCanvas(1000, 600);
@@ -57,13 +60,13 @@ function setup() {
     console.log("Started live game");
   });
 
-  butPlayBulk = createButton("PLAY 100");
+  butPlayBulk = createButton("PLAY " + bulk);
   formatBut(butPlayBulk);
   butPlayBulk.mousePressed(function () {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < bulk; i++) {
       ai.game();
     }
-    console.log("Played 100 games");
+    console.log("Played " + bulk + " games");
   });
 
   butPlayUntilTrained = createButton("PLAY UNTIL TRAINED");

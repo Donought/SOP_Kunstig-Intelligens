@@ -35,18 +35,24 @@ function drawStatusBoard() {
 
   textSize(20);
 
-  if (winPiece == 1) {
-    text("Current goal: fill with O's", x + step, y + step * 3);
+  if (ai.fields == 3) {
+    text("Current AI: menace3", x + step, y + step * 3);
   } else {
-    text("Current goal: fill with X's", x + step, y + step * 3);
+    text("Current AI: menace6", x + step, y + step * 3);
   }
 
-  text("Games played: " + ai.games, x + step, y + step * 5);
-  text("Games won: " + ai.winCount, x + step, y + step * 6);
-  text("Games lost: " + ai.lossCount, x + step, y + step * 7);
+  if (winPiece == 1) {
+    text("Current goal: fill with O's", x + step, y + step * 4);
+  } else {
+    text("Current goal: fill with X's", x + step, y + step * 4);
+  }
 
-  text("Best win streak: " + ai.bestWinStreak, x + step, y + step * 9);
-  text("Current win streak: " + ai.winStreak, x + step, y + step * 10);
+  text("Games played: " + ai.games, x + step, y + step * 6);
+  text("Games won: " + ai.winCount, x + step, y + step * 7);
+  text("Games lost: " + ai.lossCount, x + step, y + step * 8);
+
+  text("Best win streak: " + ai.bestWinStreak, x + step, y + step * 10);
+  text("Current win streak: " + ai.winStreak, x + step, y + step * 11);
 }
 
 function xPiece(pos) {
