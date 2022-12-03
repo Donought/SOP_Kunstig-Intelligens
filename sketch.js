@@ -74,7 +74,7 @@ function setup() {
   butPlayUntilTrained = createButton("PLAY UNTIL TRAINED");
   formatBut(butPlayUntilTrained);
   butPlayUntilTrained.mousePressed(function () {
-    while (ai.winStreak < trainedState) {
+    while (ai.bestWinStreak < trainedState) {
       ai.game();
     }
     console.log("Ai trained after " + ai.games + " games");
