@@ -1,7 +1,7 @@
 class Menace3 {
   constructor() {
     this.ai = [];
-    this.marbles = 2;
+    this.marbles = 10;
     this.restart();
 
     this.fields = 3;
@@ -16,7 +16,7 @@ class Menace3 {
     this.winStreak = 0;
     this.bestWinStreak = 0;
 
-    this.positiveFb = 3; // Positive feedback / how many marbles to add
+    this.positiveFb = 15; // Positive feedback / how many marbles to add
     this.negativeFb = 1; // Negative feedback / how many marbles to remove
   }
 
@@ -117,24 +117,44 @@ class Menace3 {
       for (let j = 0; j < 3; j++) {
         this.ai[i][j] = [[], [], []];
         for (let k = 0; k < 3; k++) {
+          // This makes sure that reinforcement for earlier moves matter less, as they have more marbles (but it didn't end up working for some reason)
+          /*for (
+            let l = 0;
+            l <
+            (function () {
+              let count = 0;
+              if (i == 0) {
+                count++;
+              }
+              if (j == 0) {
+                count++;
+              }
+              if (k == 0) {
+                count++;
+              }
+              return count;
+            })();
+            l++
+          ) {*/
           if (i == 0) {
-            for (let l = 0; l < this.marbles; l++) {
+            for (let m = 0; m < this.marbles; m++) {
               this.ai[i][j][k].push([0, 1]);
               this.ai[i][j][k].push([0, 2]);
             }
           }
           if (j == 0) {
-            for (let l = 0; l < this.marbles; l++) {
+            for (let m = 0; m < this.marbles; m++) {
               this.ai[i][j][k].push([1, 1]);
               this.ai[i][j][k].push([1, 2]);
             }
           }
           if (k == 0) {
-            for (let l = 0; l < this.marbles; l++) {
+            for (let m = 0; m < this.marbles; m++) {
               this.ai[i][j][k].push([2, 1]);
               this.ai[i][j][k].push([2, 2]);
             }
           }
+          //}
         }
       }
     }
@@ -145,8 +165,8 @@ class Menace6 extends Menace3 {
   constructor() {
     super();
     this.fields = 6;
-    this.marbles = 9;
-    this.positiveFb = 12;
+    this.marbles = 10;
+    this.positiveFb = 15;
     this.negativeFb = 1;
     this.restart();
   }
@@ -221,42 +241,70 @@ class Menace6 extends Menace3 {
             for (let m = 0; m < 3; m++) {
               this.ai[i][j][k][l][m] = [[], [], []];
               for (let n = 0; n < 3; n++) {
+                /*for (
+                  let o = 0;
+                  o <
+                  (function () {
+                    let count = 0;
+                    if (i == 0) {
+                      count++;
+                    }
+                    if (j == 0) {
+                      count++;
+                    }
+                    if (k == 0) {
+                      count++;
+                    }
+                    if (l == 0) {
+                      count++;
+                    }
+                    if (m == 0) {
+                      count++;
+                    }
+                    if (n == 0) {
+                      count++;
+                    }
+                    return count;
+                  })();
+                  o++
+                ) {*/
                 if (i == 0) {
-                  for (let o = 0; o < this.marbles; o++) {
+                  for (let p = 0; p < this.marbles; p++) {
                     this.ai[i][j][k][l][m][n].push([0, 1]);
                     this.ai[i][j][k][l][m][n].push([0, 2]);
                   }
                 }
                 if (j == 0) {
-                  for (let o = 0; o < this.marbles; o++) {
+                  for (let p = 0; p < this.marbles; p++) {
                     this.ai[i][j][k][l][m][n].push([1, 1]);
                     this.ai[i][j][k][l][m][n].push([1, 2]);
                   }
                 }
                 if (k == 0) {
-                  for (let o = 0; o < this.marbles; o++) {
+                  for (let p = 0; p < this.marbles; p++) {
                     this.ai[i][j][k][l][m][n].push([2, 1]);
                     this.ai[i][j][k][l][m][n].push([2, 2]);
                   }
                 }
                 if (l == 0) {
-                  for (let o = 0; o < this.marbles; o++) {
+                  for (let p = 0; p < this.marbles; p++) {
                     this.ai[i][j][k][l][m][n].push([3, 1]);
                     this.ai[i][j][k][l][m][n].push([3, 2]);
                   }
                 }
                 if (m == 0) {
-                  for (let o = 0; o < this.marbles; o++) {
+                  for (let p = 0; p < this.marbles; p++) {
                     this.ai[i][j][k][l][m][n].push([4, 1]);
                     this.ai[i][j][k][l][m][n].push([4, 2]);
                   }
                 }
                 if (n == 0) {
-                  for (let o = 0; o < this.marbles; o++) {
+                  for (let p = 0; p < this.marbles; p++) {
                     this.ai[i][j][k][l][m][n].push([5, 1]);
                     this.ai[i][j][k][l][m][n].push([5, 2]);
                   }
                 }
+                //}
               }
             }
           }

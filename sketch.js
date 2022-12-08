@@ -28,6 +28,8 @@ function setup() {
   bw = height;
   bh = height;
 
+  console.log(ai.ai);
+
   butSwitchAi = createButton("SWITCH AI");
   formatBut(butSwitchAi);
   butSwitchAi.mousePressed(function () {
@@ -89,6 +91,7 @@ function setup() {
     ai.winStreak = 0;
     ai.bestWinStreak = 0;
     ai.games = 0;
+    board = fillArray(0, ai.fields);
     console.log("Restarted ai");
   });
 
