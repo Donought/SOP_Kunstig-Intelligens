@@ -55,6 +55,9 @@ function setup() {
     }
     ai.winStreak = 0;
     ai.bestWinStreak = 0;
+    ai.lossCount = 0;
+    ai.winCount = 0;
+    ai.games = 0;
   });
 
   butPlayLive = createButton("PLAY LIVE");
